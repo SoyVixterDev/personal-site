@@ -1,6 +1,8 @@
-import Wallpaper from './Wallpaper.tsx'
-import VirtualDesk from './VirtualDesk.tsx'
 import { useState, useEffect} from 'react';
+
+import VirtualDesk from './VirtualDesk.tsx'
+import Wallpaper from './Wallpaper.tsx'
+import Taskbar from './Taskbar.tsx'
 
 interface Size
 {
@@ -34,11 +36,12 @@ const App = () =>
     }
   }, []);
 
-
   const reactiveOrientation: string = (size && (size?.height > size?.width) ? "portrait" : "landscape");  
   
   return (
     <VirtualDesk reactiveOrientation={reactiveOrientation}>
+      <Wallpaper />
+      <Taskbar></Taskbar>
     </VirtualDesk>
   )
 }
