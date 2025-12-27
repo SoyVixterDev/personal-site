@@ -4,16 +4,15 @@ import "./Desktop.css"
 interface VirtualDeskProps
 {
     children?: any;
-    ref: Ref<HTMLDivElement>;
     /** The current orientation of the screen */
     reactiveOrientation: string;
 }
 
-const VirtualDesk = ( {children, ref, reactiveOrientation}:VirtualDeskProps) =>
+const VirtualDesk = ( {children, reactiveOrientation}:VirtualDeskProps) =>
 {
     return(
         
-        <div ref={ref} className={ "virtual-desk " + reactiveOrientation}>
+        <div className={ "virtual-desk " + reactiveOrientation}>
             {children} 
         </div>
     );

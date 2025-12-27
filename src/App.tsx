@@ -41,13 +41,16 @@ const App = () =>
   const containerRef = useRef<HTMLDivElement>(null);
 
   return (
-    <VirtualDesk ref={containerRef} reactiveOrientation={reactiveOrientation}>
-      <Wallpaper />
+    <div className="container" ref={containerRef}>
+      <VirtualDesk reactiveOrientation={reactiveOrientation}>
+        <Wallpaper />
 
-      <Window containerRef={containerRef} icon={DefaultWallpaper} title="Test" initialPosition={{x: 300, y: 300}} initialSize={{x: 400, y:400}}></Window>
+        <Window containerRef={containerRef} icon={DefaultWallpaper} title="Test" initialPosition={{x: 100, y: 100}} initialSize={{x: 400, y:400}}></Window>
+        <Window containerRef={containerRef} icon={DefaultWallpaper} title="Test" initialPosition={{x: 600, y: 100}} initialSize={{x: 400, y:400}}></Window>
 
-      <Taskbar></Taskbar>
-    </VirtualDesk>
+        <Taskbar></Taskbar>
+      </VirtualDesk>
+    </div>
   )
 }
 

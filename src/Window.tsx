@@ -42,7 +42,6 @@ const Window = ({children, containerRef, title, icon, initialPosition = {x: 0, y
 
         const onMouseDown = (e: MouseEvent) =>
         {
-            console.log("Mouse Down");
             isClicked.current = true;
             mouseInitialPos.current = {
                 x: e.clientX,
@@ -51,7 +50,9 @@ const Window = ({children, containerRef, title, icon, initialPosition = {x: 0, y
         };
         const onMouseUp = (e: MouseEvent) =>
         {
-            console.log("Mouse Up");
+            if(isClicked.current == false)
+                return;
+            
             isClicked.current = false;
             windowLastPos.current = {
                 x: window.offsetLeft,
@@ -63,21 +64,21 @@ const Window = ({children, containerRef, title, icon, initialPosition = {x: 0, y
             if(!isClicked.current) 
                 return;
 
-            const x = clamp(e.clientX - mouseInitialPos.current.x + windowLastPos.current.x, 0, 700);
-            const y = clamp(e.clientY - mouseInitialPos.current.y + windowLastPos.current.y, 0, 500);
+            const x = clamp(e.clientX - mouseInitialPos.current.x + windowLastPos.current.x, 0, 688);
+            const y = clamp(e.clientY - mouseInitialPos.current.y + windowLastPos.current.y, 0, 416);
 
             window.style.left = `${x}px`;
             window.style.top = `${y}px`;
         };
 
         decorator.addEventListener('mousedown', onMouseDown);
-        decorator.addEventListener('mouseup', onMouseUp);
+        container.addEventListener('mouseup', onMouseUp);
         container.addEventListener('mousemove', onMouseMove);
         
         const cleanup = () =>
         {
             decorator.removeEventListener('mousedown', onMouseDown);
-            decorator.removeEventListener('mouseup', onMouseUp);
+            container.removeEventListener('mouseup', onMouseUp);
             container.removeEventListener('mousemove', onMouseMove);
         };
 
