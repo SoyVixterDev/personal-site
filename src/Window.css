@@ -1,6 +1,6 @@
 .window
 {
-    background-color:red;
+    background-color: #36365f;
         
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -12,10 +12,12 @@
 }
 .window-content
 {
-    background-color: magenta;
-    bottom: 1%;
-    left: 1%;
-    right: 1%;
+    background-color: black;
+    width: auto;
+    height: 90%;
+    margin-bottom: 2.5%;
+    margin-left: 2.5%;
+    margin-right: 2.5%;
         
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -27,7 +29,7 @@
 }
 .window-decorator
 {
-    background-color: blue;
+    background-color: #707da2;
     width: auto;
     height: 5%;
     padding: 5px;
