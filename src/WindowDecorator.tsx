@@ -1,15 +1,17 @@
 import './Window.css';
 import './Desktop.css';
+import { RefObject } from 'react';
 
 interface WindowDecoratorProps
 {
-    title: string,
-    icon?: string
+    ref: RefObject<HTMLDivElement | null>;
+    title: string;
+    icon?: string;
 }
 
-const WindowDecorator = ({title, icon}: WindowDecoratorProps) =>
+const WindowDecorator = ({ref, title, icon}: WindowDecoratorProps) =>
 {
-    return <div className="window-decorator">
+    return <div ref={ref} className="window-decorator">
         <img className='window-decorator_icon' src={icon}/>
         <p className='window-decorator_title'>{title}</p>
         <div className="window-decorator_buttons">

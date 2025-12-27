@@ -1,21 +1,18 @@
-import { useState, useEffect} from 'react';
+import { useState, useEffect, useRef} from 'react';
+
+import { Vector2 } from './structures/MathStructures.tsx';
 
 import VirtualDesk from './VirtualDesk.tsx'
 import Wallpaper from './Wallpaper.tsx'
 import Taskbar from './Taskbar.tsx'
 import Window from './Window.tsx'
 
-import DefaultWallpaper from './assets/defaultWallpaper.png';
 
-interface Size
-{
-  width: number;
-  height: number;
-}
+import DefaultWallpaper from './assets/defaultWallpaper.png';
 
 const App = () =>
 {
-  const [size, setSize] = useState<Size>();
+  const [size, setSize] = useState<Vector2>();
 
   const resizeHandler = () =>
   {
@@ -23,8 +20,8 @@ const App = () =>
       const height = window.innerHeight;
       setSize(
         {
-          width: width,
-          height: height
+          x: width,
+          y: height  
         }
       );
   }
@@ -39,13 +36,15 @@ const App = () =>
     }
   }, []);
 
-  const reactiveOrientation: string = (size && (size?.height > size?.width) ? "portrait" : "landscape");  
+  const reactiveOrientation: string = (size && (size?.y > size?.x) ? "portrait" : "landscape");  
   
+  const containerRef = useRef<HTMLDivElement>(null);
+
   return (
-    <VirtualDesk reactiveOrientation={reactiveOrientation}>
+    <VirtualDesk ref={containerRef} reactiveOrientation={reactiveOrientation}>
       <Wallpaper />
 
-      <Window icon={DefaultWallpaper} title="Test" pos={[25, 25]} size={[400, 400]}></Window>
+      <Window containerRef={containerRef} icon={DefaultWallpaper} title="Test" initialPosition={{x: 300, y: 300}} initialSize={{x: 400, y:400}}></Window>
 
       <Taskbar></Taskbar>
     </VirtualDesk>
