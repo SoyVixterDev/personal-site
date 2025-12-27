@@ -3,6 +3,9 @@ import { useState, useEffect} from 'react';
 import VirtualDesk from './VirtualDesk.tsx'
 import Wallpaper from './Wallpaper.tsx'
 import Taskbar from './Taskbar.tsx'
+import Window from './Window.tsx'
+
+import DefaultWallpaper from './assets/defaultWallpaper.png';
 
 interface Size
 {
@@ -41,9 +44,12 @@ const App = () =>
   return (
     <VirtualDesk reactiveOrientation={reactiveOrientation}>
       <Wallpaper />
+
+      <Window icon={DefaultWallpaper} title="Test" pos={[25, 25]} size={[400, 400]}></Window>
+
       <Taskbar></Taskbar>
     </VirtualDesk>
   )
 }
 
-export default App
+export default App;

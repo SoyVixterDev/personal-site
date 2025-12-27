@@ -12,9 +12,9 @@ interface WindowProps
 
 const Window = ({children, title, icon, pos = [0, 0], size = [100, 100]}: WindowProps) =>
 {
-    return <div className='Window' style={{position: 'absolute', left: pos[0], top: pos[1], width: size[0], height: size[1]}}>
+    return <div className='window' style={{position: 'absolute', left: pos[0], top: pos[1], width: size[0], height: size[1]}}>
         <WindowDecorator title={title} icon={icon}></WindowDecorator>
-            {children}
+        <div className='window-content'>{children}</div>
     </div>
 }
 
