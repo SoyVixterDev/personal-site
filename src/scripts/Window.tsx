@@ -1,9 +1,8 @@
 import React, { Ref, RefObject, useEffect, useRef} from 'react'
 
-import { Vector2 } from './structures/MathStructures.tsx'
+import { Vector2 } from '../structures/MathStructures.tsx'
 
 import WindowDecorator from './WindowDecorator.tsx'
-
 
 function clamp(val: number, min: number, max: number)
 {
@@ -22,7 +21,7 @@ interface WindowProps
     initialSize: Vector2
 }
 
-const Window = ({children, containerRef, virtualDeskRef, title, icon, initialPosition = {x: 0, y: 0}, initialSize = {x: 100, y: 100}}: WindowProps) =>
+const Window = ({children, containerRef, virtualDeskRef, title, icon, initialPosition = {x: 0, y: 0}, initialSize = {x: 45, y: 45}}: WindowProps) =>
 {
     const windowRef = useRef<HTMLDivElement>(null);
     const decoratorRef = useRef<HTMLDivElement>(null);
@@ -71,6 +70,9 @@ const Window = ({children, containerRef, virtualDeskRef, title, icon, initialPos
 
             window.style.left = `${x}px`;
             window.style.top = `${y}px`;
+            
+            // This is an example for how to change the Z-Ordering of components, should find a way to use an order system from outside within a "Window Manager"
+            window.style.zIndex = `${y}`;
         };
 
         decorator.addEventListener('mousedown', onMouseDown);
@@ -88,7 +90,7 @@ const Window = ({children, containerRef, virtualDeskRef, title, icon, initialPos
     });
 
 
-    return <div className='window' ref={windowRef} style={{position: 'absolute', left: initialPosition.x, top: initialPosition.y, width: initialSize.x, height: initialSize.y}}>
+    return <div className='window' ref={windowRef} style={{position: 'absolute', left: initialPosition.x, top: initialPosition.y, width: `${initialSize.x}%`, height: `${initialSize.y}%`}}>
         <WindowDecorator ref={decoratorRef} title={title} icon={icon}></WindowDecorator>
         <div className='window-content'>{children}</div>
     </div>

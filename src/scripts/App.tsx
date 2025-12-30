@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef} from 'react';
 
-import { Vector2 } from './structures/MathStructures.tsx';
+import { Vector2 } from '../structures/MathStructures.tsx';
 
 import VirtualDesk from './VirtualDesk.tsx'
 import Wallpaper from './Wallpaper.tsx'
@@ -45,8 +45,8 @@ const App = () =>
     <div className="container" ref={containerRef}>
       <VirtualDesk virtualDeskRef={virtualDeskRef} reactiveOrientation={reactiveOrientation}>
         <Wallpaper />
-        <Window containerRef={containerRef} virtualDeskRef={virtualDeskRef} icon={DefaultWallpaper} title="Test" initialPosition={{x: 100, y: 100}} initialSize={{x: 400, y:400}}></Window>
-        <Window containerRef={containerRef} virtualDeskRef={virtualDeskRef} icon={DefaultWallpaper} title="Test" initialPosition={{x: 600, y: 100}} initialSize={{x: 400, y:400}}></Window>
+        <Window containerRef={containerRef} virtualDeskRef={virtualDeskRef} icon={DefaultWallpaper} title="Test 2" initialPosition={{x: 600, y: 100}} initialSize={{x: 35, y:45}}></Window>
+        <Window containerRef={containerRef} virtualDeskRef={virtualDeskRef} icon={DefaultWallpaper} title="Test 1" initialPosition={{x: 100, y: 100}} initialSize={{x: 35, y:45}}></Window>
         <Taskbar></Taskbar>
       </VirtualDesk>
     </div>
