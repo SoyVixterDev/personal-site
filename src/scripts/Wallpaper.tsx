@@ -1,6 +1,6 @@
-import './Desktop.css'
+import '../css/Desktop.css'
 import React from 'react'
-import DefaultWallpaper from './assets/defaultWallpaper.png';
+import DefaultWallpaper from '../assets/defaultWallpaper.png';
             {/* <p className= "debug-text">{reactiveOrientation}</p> */}
 const Wallpaper = () =>
 {

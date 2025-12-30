@@ -8,7 +8,7 @@ import Taskbar from './Taskbar.tsx'
 import Window from './Window.tsx'
 
 
-import DefaultWallpaper from './assets/defaultWallpaper.png';
+import DefaultWallpaper from '../assets/defaultWallpaper.png';
 
 const App = () =>
 {

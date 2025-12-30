@@ -1,5 +1,5 @@
-import './Window.css';
-import './Desktop.css';
+import '../css/Window.css';
+import '../css/Desktop.css';
 import { RefObject } from 'react';
 
 interface WindowDecoratorProps
