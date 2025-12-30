@@ -15,13 +15,14 @@ interface WindowProps
 {
     children?: any,
     containerRef: RefObject<HTMLDivElement | null>,
+    virtualDeskRef: RefObject<HTMLDivElement | null>,
     title: string,
     icon?: string,
     initialPosition: Vector2,
     initialSize: Vector2
 }
 
-const Window = ({children, containerRef, title, icon, initialPosition = {x: 0, y: 0}, initialSize = {x: 100, y: 100}}: WindowProps) =>
+const Window = ({children, containerRef, virtualDeskRef, title, icon, initialPosition = {x: 0, y: 0}, initialSize = {x: 100, y: 100}}: WindowProps) =>
 {
     const windowRef = useRef<HTMLDivElement>(null);
     const decoratorRef = useRef<HTMLDivElement>(null);
@@ -33,11 +34,12 @@ const Window = ({children, containerRef, title, icon, initialPosition = {x: 0, y
 
     useEffect(() =>
     {
-        if(decoratorRef.current == null || windowRef.current == null || containerRef.current == null)
+        if(decoratorRef.current == null || windowRef.current == null || containerRef.current == null || virtualDeskRef.current == null)
             return;
 
         const window = windowRef.current;
         const container = containerRef.current;
+        const virtualDesk = virtualDeskRef.current;
         const decorator = decoratorRef.current;
 
         const onMouseDown = (e: MouseEvent) =>
@@ -64,8 +66,8 @@ const Window = ({children, containerRef, title, icon, initialPosition = {x: 0, y
             if(!isClicked.current) 
                 return;
 
-            const x = clamp(e.clientX - mouseInitialPos.current.x + windowLastPos.current.x, 0, 688);
-            const y = clamp(e.clientY - mouseInitialPos.current.y + windowLastPos.current.y, 0, 416);
+            const x = clamp(e.clientX - mouseInitialPos.current.x + windowLastPos.current.x, 0, virtualDesk.clientWidth - window.clientWidth + 1);
+            const y = clamp(e.clientY - mouseInitialPos.current.y + windowLastPos.current.y, 0, virtualDesk.clientHeight - window.clientHeight + 1);
 
             window.style.left = `${x}px`;
             window.style.top = `${y}px`;

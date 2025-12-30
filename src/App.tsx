@@ -39,15 +39,14 @@ const App = () =>
   const reactiveOrientation: string = (size && (size?.y > size?.x) ? "portrait" : "landscape");  
   
   const containerRef = useRef<HTMLDivElement>(null);
+  const virtualDeskRef = useRef<HTMLDivElement>(null);
 
   return (
     <div className="container" ref={containerRef}>
-      <VirtualDesk reactiveOrientation={reactiveOrientation}>
+      <VirtualDesk virtualDeskRef={virtualDeskRef} reactiveOrientation={reactiveOrientation}>
         <Wallpaper />
-
-        <Window containerRef={containerRef} icon={DefaultWallpaper} title="Test" initialPosition={{x: 100, y: 100}} initialSize={{x: 400, y:400}}></Window>
-        <Window containerRef={containerRef} icon={DefaultWallpaper} title="Test" initialPosition={{x: 600, y: 100}} initialSize={{x: 400, y:400}}></Window>
-
+        <Window containerRef={containerRef} virtualDeskRef={virtualDeskRef} icon={DefaultWallpaper} title="Test" initialPosition={{x: 100, y: 100}} initialSize={{x: 400, y:400}}></Window>
+        <Window containerRef={containerRef} virtualDeskRef={virtualDeskRef} icon={DefaultWallpaper} title="Test" initialPosition={{x: 600, y: 100}} initialSize={{x: 400, y:400}}></Window>
         <Taskbar></Taskbar>
       </VirtualDesk>
     </div>

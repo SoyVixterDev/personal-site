@@ -1,18 +1,19 @@
-import { JSX, ReactNode, Ref } from "react";
+import { RefObject } from "react";
 import "./Desktop.css"
 
 interface VirtualDeskProps
 {
+    virtualDeskRef: RefObject<HTMLDivElement | null>;
     children?: any;
     /** The current orientation of the screen */
     reactiveOrientation: string;
 }
 
-const VirtualDesk = ( {children, reactiveOrientation}:VirtualDeskProps) =>
+const VirtualDesk = ( {children, virtualDeskRef, reactiveOrientation}:VirtualDeskProps) =>
 {
     return(
         
-        <div className={ "virtual-desk " + reactiveOrientation}>
+        <div ref={virtualDeskRef} className={ "virtual-desk " + reactiveOrientation}>
             {children} 
         </div>
     );
