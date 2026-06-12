@@ -1,0 +1,123 @@
+.window
+{
+    background-color: #36365f;
+        
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+.window-content
+{
+    background-color: black;
+    width: auto;
+    height: calc(100% - 1.35vw);
+
+    margin-bottom: .25vw;
+    margin-left: .25vw;
+    margin-right: .25vw;
+        
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+.window-decorator
+{
+    background-color: #707da2;
+    width: auto;
+    height: 1.1vw;
+    
+    display: flex;
+    flex:auto;
+    flex-direction: row;
+    align-items: center;
+
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+.window-decorator-button
+{
+    background-color: #707da2;
+
+    aspect-ratio: calc(1);
+
+    height: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.window-decorator_buttons
+{
+    aspect-ratio: calc(1);
+
+    height: 100%;
+    width: 100%;
+    
+    margin: 0%;
+
+    display: flex;
+    flex-direction: row-reverse;
+
+    align-content: center;
+    align-self: center;
+    align-items: center;
+
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+    /* pointer-events: none; */
+}
+
+.window-decorator_icon
+{
+    aspect-ratio: calc(1);
+
+    height: 70%;
+    padding: 0.5%;
+
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+    pointer-events: none;
+}
+
+.window-decorator_title
+{
+    width: 100%;
+    margin-left: 0.5%;
+
+    font-family: Impact, Haettenschweiler, 'Arial Bold', sans-serif;
+    font-weight: bold;
+    font-size: 65%;
+
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+    pointer-events: none;  
+}

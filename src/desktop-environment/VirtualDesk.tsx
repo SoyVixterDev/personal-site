@@ -1,5 +1,5 @@
 import { JSX, ReactNode, Ref } from "react";
-import "./Desktop.css"
+import "./CSS/Desktop.css"
 
 interface VirtualDeskProps
 {

@@ -1,17 +1,51 @@
-import { useState, useEffect, useRef} from 'react';
+import { useState, useEffect, useRef, ReactNode} from 'react';
 
 import { Vector2 } from './structures/MathStructures.tsx';
+import { Dictionary } from './structures/CollectionStructures.tsx';
 
-import VirtualDesk from './VirtualDesk.tsx'
-import Wallpaper from './Wallpaper.tsx'
-import Taskbar from './Taskbar.tsx'
-import Window from './Window.tsx'
-
+import VirtualDesk from './desktop-environment/VirtualDesk.tsx'
+import Wallpaper from './desktop-environment/Wallpaper.tsx'
+import Taskbar from './desktop-environment/Taskbar.tsx'
+import Window from './desktop-environment/Window.tsx'
 
 import DefaultWallpaper from './assets/defaultWallpaper.png';
 
+const windowDict: Map<string, ReactNode> = new Map();
+
+function CreateWindow(name: string, pos: Vector2, size: Vector2 /* Add Content and Icon Here */)
+{
+  windowDict.set(name, <Window icon={DefaultWallpaper} title={name} initialPosition={pos} initialSize={size} order={windowDict.size}></Window>);
+}
+
+function SelectWindow(name: string)
+{
+  return windowDict.get(name);
+}
+
+function CloseWindow(name: string)
+{
+  windowDict.delete(name);
+}
+
+let initialized = false;
+function Init()
+{
+  if(initialized) return;
+
+  initialized = true;
+
+  windowDict.clear();
+  for(let i = 0; i < 20; i++)
+  {
+      CreateWindow(`Test ${i}`, {x: i*2.5, y:i*2.5}, {x:32, y:18});
+  }
+}
+
+
 const App = () =>
 {
+  Init();
+  
   const [size, setSize] = useState<Vector2>();
 
   const resizeHandler = () =>
@@ -37,21 +71,18 @@ const App = () =>
   }, []);
 
   const reactiveOrientation: string = (size && (size?.y > size?.x) ? "portrait" : "landscape");  
-  
-  const containerRef = useRef<HTMLDivElement>(null);
 
   return (
-    <div className="container" ref={containerRef}>
+    <div className="container">
       <VirtualDesk reactiveOrientation={reactiveOrientation}>
         <Wallpaper />
-
-        <Window containerRef={containerRef} icon={DefaultWallpaper} title="Test" initialPosition={{x: 100, y: 100}} initialSize={{x: 400, y:400}}></Window>
-        <Window containerRef={containerRef} icon={DefaultWallpaper} title="Test" initialPosition={{x: 600, y: 100}} initialSize={{x: 400, y:400}}></Window>
-
-        <Taskbar></Taskbar>
+        { windowDict.values() }
+        <Taskbar>
+        </Taskbar>
       </VirtualDesk>
     </div>
   )
 }
 
+export { CloseWindow, SelectWindow, CreateWindow };
 export default App;

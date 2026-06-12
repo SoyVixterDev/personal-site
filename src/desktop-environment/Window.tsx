@@ -1,6 +1,6 @@
 import React, { Ref, RefObject, useEffect, useRef} from 'react'
 
-import { Vector2 } from './structures/MathStructures.tsx'
+import { Vector2 } from '../structures/MathStructures.tsx'
 
 import WindowDecorator from './WindowDecorator.tsx'
 
@@ -14,14 +14,14 @@ function clamp(val: number, min: number, max: number)
 interface WindowProps
 {
     children?: any,
-    containerRef: RefObject<HTMLDivElement | null>,
     title: string,
     icon?: string,
     initialPosition: Vector2,
-    initialSize: Vector2
+    initialSize: Vector2,
+    order: number
 }
 
-const Window = ({children, containerRef, title, icon, initialPosition = {x: 0, y: 0}, initialSize = {x: 100, y: 100}}: WindowProps) =>
+const Window = ({children, title, icon, initialPosition = {x: 0, y: 0}, initialSize = {x: 20, y: 20}, order = 0}: WindowProps) =>
 {
     const windowRef = useRef<HTMLDivElement>(null);
     const decoratorRef = useRef<HTMLDivElement>(null);
@@ -33,19 +33,22 @@ const Window = ({children, containerRef, title, icon, initialPosition = {x: 0, y
 
     useEffect(() =>
     {
-        if(decoratorRef.current == null || windowRef.current == null || containerRef.current == null)
+        if(decoratorRef.current == null || windowRef.current == null)
             return;
 
-        const window = windowRef.current;
-        const container = containerRef.current;
+        const thisWindow = windowRef.current;
         const decorator = decoratorRef.current;
 
         const onMouseDown = (e: MouseEvent) =>
         {
             isClicked.current = true;
+
+            const xVW = (e.clientX / window.innerWidth) * 100;
+            const yVW = (e.clientY / window.innerWidth) * 100;
+
             mouseInitialPos.current = {
-                x: e.clientX,
-                y: e.clientY
+                x: xVW,
+                y: yVW
             }
         };
         const onMouseUp = (e: MouseEvent) =>
@@ -54,9 +57,13 @@ const Window = ({children, containerRef, title, icon, initialPosition = {x: 0, y
                 return;
             
             isClicked.current = false;
+
+            const xVW = (thisWindow.offsetLeft / window.innerWidth) * 100;
+            const yVW = (thisWindow.offsetTop / window.innerWidth) * 100;
+
             windowLastPos.current = {
-                x: window.offsetLeft,
-                y: window.offsetTop
+                x: xVW,
+                y: yVW
             }
         };
         const onMouseMove = (e: MouseEvent) =>
@@ -64,29 +71,32 @@ const Window = ({children, containerRef, title, icon, initialPosition = {x: 0, y
             if(!isClicked.current) 
                 return;
 
-            const x = clamp(e.clientX - mouseInitialPos.current.x + windowLastPos.current.x, 0, 688);
-            const y = clamp(e.clientY - mouseInitialPos.current.y + windowLastPos.current.y, 0, 416);
+            const xVW = (e.clientX / window.innerWidth) * 100;
+            const yVW = (e.clientY / window.innerWidth) * 100;
 
-            window.style.left = `${x}px`;
-            window.style.top = `${y}px`;
+            const x = clamp(xVW- mouseInitialPos.current.x + windowLastPos.current.x, 0, 100 - initialSize.x);
+            const y = yVW - mouseInitialPos.current.y + windowLastPos.current.y;
+
+            thisWindow.style.left = `${x}vw`;
+            thisWindow.style.top = `${y}vw`;
         };
 
         decorator.addEventListener('mousedown', onMouseDown);
-        container.addEventListener('mouseup', onMouseUp);
-        container.addEventListener('mousemove', onMouseMove);
+        window.addEventListener('mouseup', onMouseUp);
+        window.addEventListener('mousemove', onMouseMove);
         
         const cleanup = () =>
         {
             decorator.removeEventListener('mousedown', onMouseDown);
-            container.removeEventListener('mouseup', onMouseUp);
-            container.removeEventListener('mousemove', onMouseMove);
+            window.removeEventListener('mouseup', onMouseUp);
+            window.removeEventListener('mousemove', onMouseMove);
         };
 
         return cleanup;
     });
 
 
-    return <div className='window' ref={windowRef} style={{position: 'absolute', left: initialPosition.x, top: initialPosition.y, width: initialSize.x, height: initialSize.y}}>
+    return <div className='window' ref={windowRef} style={{position: 'absolute', left: initialPosition.x  + "vw", top: initialPosition.y + "vw", width: initialSize.x + "vw", height: initialSize.y + "vw"}}>
         <WindowDecorator ref={decoratorRef} title={title} icon={icon}></WindowDecorator>
         <div className='window-content'>{children}</div>
     </div>

@@ -1,5 +1,5 @@
-import './Desktop.css';
-import DefaultTaskbar from './assets/defaultTaskbar.png';
+import './CSS/Desktop.css';
+import DefaultTaskbar from '../assets/defaultTaskbar.png';
 
 interface TaskbarProps
 {
