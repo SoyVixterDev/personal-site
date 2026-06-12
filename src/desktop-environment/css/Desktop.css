@@ -16,27 +16,6 @@
     width: 100vw;
     height: 100vh;
     overflow:hidden;
-
-    /* &.landscape
-    {
-        height: 81vh;
-        width: 108vh;
-
-        margin-left: auto;
-        margin-right: auto;
-        margin-top: 9.5vh;
-        margin-bottom: 9.5vh;
-    }
-    &.portrait
-    {
-        height: 66vw;
-        width: 88vw;
-
-        margin-left: auto;
-        margin-right: auto;
-        margin-top: 5vh;
-        margin-bottom: auto;
-    } */
         
     -webkit-touch-callout: none;
     -webkit-user-select: none;

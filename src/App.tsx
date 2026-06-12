@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, ReactNode} from 'react';
+import React, { useState, useEffect, useRef, ReactNode} from 'react';
 
 import { Vector2 } from './structures/MathStructures.tsx';
 import { Dictionary } from './structures/CollectionStructures.tsx';
@@ -11,20 +11,47 @@ import Window from './desktop-environment/Window.tsx'
 import DefaultWallpaper from './assets/defaultWallpaper.png';
 
 const windowDict: Map<string, ReactNode> = new Map();
+const tasksDict: Map<string, ReactNode> = new Map();
+
+
+export let forceUpdate: () => void = () =>
+{
+  console.warn("Updated forced before initialization!");
+};
 
 function CreateWindow(name: string, pos: Vector2, size: Vector2 /* Add Content and Icon Here */)
 {
-  windowDict.set(name, <Window icon={DefaultWallpaper} title={name} initialPosition={pos} initialSize={size} order={windowDict.size}></Window>);
+  windowDict.set(name, 
+    <Window 
+      key={name}
+      icon={DefaultWallpaper} 
+      title={name} 
+      initialPosition={pos} 
+      initialSize={size} 
+      order={windowDict.size}>
+    </Window>);
+  forceUpdate();
 }
 
 function SelectWindow(name: string)
 {
-  return windowDict.get(name);
+  const node = windowDict.get(name);
+  
+  windowDict.delete(name);
+  windowDict.set(name, node);
+
+  forceUpdate();
+}
+
+function MinimizeWindow(name: string)
+{
+
 }
 
 function CloseWindow(name: string)
 {
   windowDict.delete(name);
+  forceUpdate();
 }
 
 let initialized = false;
@@ -35,18 +62,20 @@ function Init()
   initialized = true;
 
   windowDict.clear();
-  for(let i = 0; i < 20; i++)
+  for(let i = 0; i < 10; i++)
   {
       CreateWindow(`Test ${i}`, {x: i*2.5, y:i*2.5}, {x:32, y:18});
   }
 }
-
 
 const App = () =>
 {
   Init();
   
   const [size, setSize] = useState<Vector2>();
+  const [, setTick] = useState(0);
+
+  forceUpdate = () => setTick(tick => tick + 1);
 
   const resizeHandler = () =>
   {
@@ -76,7 +105,11 @@ const App = () =>
     <div className="container">
       <VirtualDesk reactiveOrientation={reactiveOrientation}>
         <Wallpaper />
-        { windowDict.values() }
+            {Array.from(windowDict.entries()).map(([id, windowNode]) => (
+            <React.Fragment key={id}>
+                {windowNode}
+            </React.Fragment>
+            ))}
         <Taskbar>
         </Taskbar>
       </VirtualDesk>

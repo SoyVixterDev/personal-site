@@ -1,5 +1,5 @@
-import './CSS/Window.css';
-import './CSS/Desktop.css';
+import './css/Window.css';
+import './css/Desktop.css';
 import { RefObject, useEffect, useRef } from 'react';
 import { CloseWindow } from '../App';
 

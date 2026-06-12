@@ -3,6 +3,7 @@ import React, { Ref, RefObject, useEffect, useRef} from 'react'
 import { Vector2 } from '../structures/MathStructures.tsx'
 
 import WindowDecorator from './WindowDecorator.tsx'
+import { SelectWindow } from '../App.tsx';
 
 
 function clamp(val: number, min: number, max: number)
@@ -39,6 +40,11 @@ const Window = ({children, title, icon, initialPosition = {x: 0, y: 0}, initialS
         const thisWindow = windowRef.current;
         const decorator = decoratorRef.current;
 
+        const onFocus = (e: MouseEvent) =>
+        {
+            SelectWindow(title);
+        }
+        
         const onMouseDown = (e: MouseEvent) =>
         {
             isClicked.current = true;
@@ -81,25 +87,30 @@ const Window = ({children, title, icon, initialPosition = {x: 0, y: 0}, initialS
             thisWindow.style.top = `${y}vw`;
         };
 
+        thisWindow.addEventListener(`mousedown`, onFocus);
+
         decorator.addEventListener('mousedown', onMouseDown);
         window.addEventListener('mouseup', onMouseUp);
         window.addEventListener('mousemove', onMouseMove);
         
         const cleanup = () =>
         {
+            thisWindow.removeEventListener(`mousedown`, onFocus);
+
             decorator.removeEventListener('mousedown', onMouseDown);
             window.removeEventListener('mouseup', onMouseUp);
             window.removeEventListener('mousemove', onMouseMove);
         };
 
         return cleanup;
-    });
+    }, []);
 
 
-    return <div className='window' ref={windowRef} style={{position: 'absolute', left: initialPosition.x  + "vw", top: initialPosition.y + "vw", width: initialSize.x + "vw", height: initialSize.y + "vw"}}>
+    return (
+    <div className='window' ref={windowRef} style={{position: 'absolute', left: initialPosition.x  + "vw", top: initialPosition.y + "vw", width: initialSize.x + "vw", height: initialSize.y + "vw"}}>
         <WindowDecorator ref={decoratorRef} title={title} icon={icon}></WindowDecorator>
         <div className='window-content'>{children}</div>
-    </div>
+    </div>);
 }
 
 export default Window;
