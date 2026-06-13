@@ -21,10 +21,14 @@ let topZIndex: number = 0;
 interface WindowData
 {
   title: string,
+  icon: string,
+
   pos: Vector2,
   size: Vector2,
-  icon: string,
   zIndex: number,
+
+  taskbarIconPos: Vector2,
+  
   isMinimized: boolean,
   isMaximized: boolean
   // Add content
@@ -38,10 +42,11 @@ function WindowFromData(data: WindowData)
 {
   return <Window
       title={data.title}
-      position={data.pos}
       icon={data.icon}
+      position={data.pos}
       size={data.size}
       zIndex={data.zIndex}
+      taskbarIconPos={data.taskbarIconPos}
       isMinimized={data.isMinimized}
       isMaximized={data.isMaximized}
     />
@@ -75,7 +80,7 @@ function CreateOrFocusWindow(name: string, icon: string, pos: Vector2, size: Vec
     return;
   }
 
-  const window: WindowData = {title: name, icon: icon, pos: pos, size: size, zIndex: ++topZIndex, isMinimized: false, isMaximized: false}
+  const window: WindowData = {title: name, icon: icon, pos: pos, size: size, taskbarIconPos: {x: 2 + activeDict.size * 4, y: 2}, zIndex: ++topZIndex, isMinimized: false, isMaximized: false}
 
   activeDict.set(name, window);
 
@@ -175,7 +180,7 @@ function Init()
   activeDict.clear();
   for(let i = 0; i < 10; i++)
   {
-      CreateOrFocusWindow(`Test ${i}`, './assets/defaultWallpaper.png', {x: i*2.5, y:i*2.5}, {x:32, y:18});
+      CreateOrFocusWindow(`Test ${i}`, DefaultWallpaper, {x: i*2.5, y:i*2.5}, {x:32, y:18});
   }
 }
 

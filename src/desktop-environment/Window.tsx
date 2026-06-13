@@ -16,14 +16,18 @@ interface WindowProps
     children?: any,
     title: string,
     icon: string,
+
     position: Vector2,
     size: Vector2,
     zIndex: number,
+
+    taskbarIconPos: Vector2,
+
     isMinimized: boolean,
     isMaximized: boolean
 }
 
-const Window = ({children, title, icon, position: position = {x: 0, y: 0}, size: size = {x: 20, y: 20}, zIndex: zIndex, isMinimized: isMinimized, isMaximized: isMaximized}: WindowProps) =>
+const Window = ({children, title, icon, position: position = {x: 0, y: 0}, size: size = {x: 20, y: 20}, zIndex: zIndex, taskbarIconPos: taskbarIconPos, isMinimized: isMinimized, isMaximized: isMaximized}: WindowProps) =>
 {
     const windowRef = useRef<HTMLDivElement>(null);
     const decoratorRef = useRef<HTMLDivElement>(null);
@@ -111,27 +115,41 @@ const Window = ({children, title, icon, position: position = {x: 0, y: 0}, size:
 
     const styleMaximized: React.CSSProperties = 
     {
-        display: isMinimized ? 'none' : 'block',
         position: 'absolute',
         left: 0,
         top: 0,
         width: 100 + 'vw',
         height: 100 + 'vh',
-        zIndex: 9999
+        transformOrigin: 'center',
+        opacity: 1,
+        zIndex: 999999
     }
     const styleNormal: React.CSSProperties = 
     {
-        display: isMinimized ? 'none' : 'block',
         position: 'absolute',
         left: windowLastPos.current.x + 'vw',
         top: windowLastPos.current.y + 'vw',
         width: size.x + 'vw',
         height: size.y + 'vw',
+        opacity: 1,
         zIndex: zIndex
     }
+    const styleMinimized: React.CSSProperties = 
+    {
+        position: 'absolute',
+        left: windowLastPos.current.x + size.x/2 + 'vw',
+        top: windowLastPos.current.y + size.y/2 + 'vw',
+        width: 0,
+        height: 0,
+        opacity: 0,
+        zIndex: zIndex,
+        pointerEvents: 'none'
+    }
+
+    const style = isMinimized ? styleMinimized : (isMaximized ? styleMaximized : styleNormal);
 
     return (
-    <div className='window' ref={windowRef} style={isMaximized ? styleMaximized : styleNormal}>
+    <div className={`window ${isClicked.current ? 'dragging' : ''}`}ref={windowRef} style={style}>
         <WindowDecorator ref={decoratorRef} title={title} icon={icon}></WindowDecorator>
         <div className='window-content'>{children}</div>
     </div>);

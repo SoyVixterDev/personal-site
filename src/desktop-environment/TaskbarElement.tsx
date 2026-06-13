@@ -5,7 +5,7 @@ import { FocusOrMinimizeWindow } from '../App';
 interface TaskbarElementProps
 {
     title: string,
-    icon: any,
+    icon: string,
 }
 
 const TaskbarElement = ({title, icon}:TaskbarElementProps) =>
@@ -35,8 +35,8 @@ const TaskbarElement = ({title, icon}:TaskbarElementProps) =>
     }, []);
 
     return(
-        <button className='taskbar-element' ref={buttonRef}>
-            icon
+        <button className='taskbar-element' ref={buttonRef}>    
+            <img className='taskbar-element-icon' src={icon}></img>
         </button>
     )
 }
