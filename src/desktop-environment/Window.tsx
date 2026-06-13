@@ -1,9 +1,9 @@
-import React, { Ref, RefObject, useEffect, useRef} from 'react'
+import React, { Ref, RefObject, useEffect, useRef, useState} from 'react'
 
 import { Vector2 } from '../structures/MathStructures.tsx'
 
 import WindowDecorator from './WindowDecorator.tsx'
-import { SelectWindow } from '../App.tsx';
+import { FocusWindow } from '../App.tsx';
 
 
 function clamp(val: number, min: number, max: number)
@@ -11,18 +11,19 @@ function clamp(val: number, min: number, max: number)
     return Math.min(Math.max(val, min), max);
 }
 
-
 interface WindowProps
 {
     children?: any,
     title: string,
-    icon?: string,
-    initialPosition: Vector2,
-    initialSize: Vector2,
-    order: number
+    icon: string,
+    position: Vector2,
+    size: Vector2,
+    zIndex: number,
+    isMinimized: boolean,
+    isMaximized: boolean
 }
 
-const Window = ({children, title, icon, initialPosition = {x: 0, y: 0}, initialSize = {x: 20, y: 20}, order = 0}: WindowProps) =>
+const Window = ({children, title, icon, position: position = {x: 0, y: 0}, size: size = {x: 20, y: 20}, zIndex: zIndex, isMinimized: isMinimized, isMaximized: isMaximized}: WindowProps) =>
 {
     const windowRef = useRef<HTMLDivElement>(null);
     const decoratorRef = useRef<HTMLDivElement>(null);
@@ -30,7 +31,7 @@ const Window = ({children, title, icon, initialPosition = {x: 0, y: 0}, initialS
     const isClicked = useRef<boolean>(false);
 
     const mouseInitialPos = useRef<Vector2>({x:0, y:0});
-    const windowLastPos = useRef<Vector2>(initialPosition)
+    const windowLastPos = useRef<Vector2>(position)
 
     useEffect(() =>
     {
@@ -42,11 +43,14 @@ const Window = ({children, title, icon, initialPosition = {x: 0, y: 0}, initialS
 
         const onFocus = (e: MouseEvent) =>
         {
-            SelectWindow(title);
+            FocusWindow(title);
         }
-        
+
         const onMouseDown = (e: MouseEvent) =>
         {
+            if(isMaximized)
+                return;
+            
             isClicked.current = true;
 
             const xVW = (e.clientX / window.innerWidth) * 100;
@@ -74,13 +78,13 @@ const Window = ({children, title, icon, initialPosition = {x: 0, y: 0}, initialS
         };
         const onMouseMove = (e: MouseEvent) =>
         {
-            if(!isClicked.current) 
+            if(!isClicked.current || isMaximized) 
                 return;
 
             const xVW = (e.clientX / window.innerWidth) * 100;
             const yVW = (e.clientY / window.innerWidth) * 100;
 
-            const x = clamp(xVW- mouseInitialPos.current.x + windowLastPos.current.x, 0, 100 - initialSize.x);
+            const x = clamp(xVW- mouseInitialPos.current.x + windowLastPos.current.x, 0, 100 - size.x);
             const y = yVW - mouseInitialPos.current.y + windowLastPos.current.y;
 
             thisWindow.style.left = `${x}vw`;
@@ -103,14 +107,35 @@ const Window = ({children, title, icon, initialPosition = {x: 0, y: 0}, initialS
         };
 
         return cleanup;
-    }, []);
+    }, [isMaximized]);
 
+    const styleMaximized: React.CSSProperties = 
+    {
+        display: isMinimized ? 'none' : 'block',
+        position: 'absolute',
+        left: 0,
+        top: 0,
+        width: 100 + 'vw',
+        height: 100 + 'vh',
+        zIndex: 9999
+    }
+    const styleNormal: React.CSSProperties = 
+    {
+        display: isMinimized ? 'none' : 'block',
+        position: 'absolute',
+        left: windowLastPos.current.x + 'vw',
+        top: windowLastPos.current.y + 'vw',
+        width: size.x + 'vw',
+        height: size.y + 'vw',
+        zIndex: zIndex
+    }
 
     return (
-    <div className='window' ref={windowRef} style={{position: 'absolute', left: initialPosition.x  + "vw", top: initialPosition.y + "vw", width: initialSize.x + "vw", height: initialSize.y + "vw"}}>
+    <div className='window' ref={windowRef} style={isMaximized ? styleMaximized : styleNormal}>
         <WindowDecorator ref={decoratorRef} title={title} icon={icon}></WindowDecorator>
         <div className='window-content'>{children}</div>
     </div>);
 }
 
+export { WindowProps }
 export default Window;

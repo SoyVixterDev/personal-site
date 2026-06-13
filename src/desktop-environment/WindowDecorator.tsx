@@ -1,7 +1,9 @@
 import './css/Window.css';
 import './css/Desktop.css';
 import { RefObject, useEffect, useRef } from 'react';
-import { CloseWindow } from '../App';
+import { CloseWindow, ToggleMaximizeWindow  , ToggleMinimizeWindow } from '../App';
+import  Window, { WindowProps } from './Window.tsx'
+
 
 interface WindowDecoratorProps
 {
@@ -34,11 +36,13 @@ const WindowDecorator = ({ref, title, icon}: WindowDecoratorProps) =>
         const handleMaximize = (e: MouseEvent) =>
         {
             e.stopPropagation();
+            ToggleMaximizeWindow(title);
             console.log("Maximize");
         }
         const handleMinimize = (e: MouseEvent) =>
         {
-            e.stopPropagation();
+            e.stopPropagation()
+            ToggleMinimizeWindow(title);
             console.log("Minimize");
         }
         

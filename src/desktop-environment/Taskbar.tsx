@@ -10,7 +10,7 @@ const Taskbar = ({ children }: TaskbarProps) =>
 {
     return(
         <div className='taskbar'>
-            <img className='element-background' src={DefaultTaskbar}></img>
+            { children }
         </div>
     )
 }

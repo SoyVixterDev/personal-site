@@ -7,52 +7,163 @@ import VirtualDesk from './desktop-environment/VirtualDesk.tsx'
 import Wallpaper from './desktop-environment/Wallpaper.tsx'
 import Taskbar from './desktop-environment/Taskbar.tsx'
 import Window from './desktop-environment/Window.tsx'
+import TaskbarElement from './desktop-environment/TaskbarElement.tsx';
 
 import DefaultWallpaper from './assets/defaultWallpaper.png';
 
-const windowDict: Map<string, ReactNode> = new Map();
-const tasksDict: Map<string, ReactNode> = new Map();
 
+const activeDict: Map<string, WindowData> = new Map();
+let topZIndex: number = 0;
 
-export let forceUpdate: () => void = () =>
+/**
+ * Stored data for windows
+ */
+interface WindowData
 {
-  console.warn("Updated forced before initialization!");
-};
-
-function CreateWindow(name: string, pos: Vector2, size: Vector2 /* Add Content and Icon Here */)
-{
-  windowDict.set(name, 
-    <Window 
-      key={name}
-      icon={DefaultWallpaper} 
-      title={name} 
-      initialPosition={pos} 
-      initialSize={size} 
-      order={windowDict.size}>
-    </Window>);
-  forceUpdate();
+  title: string,
+  pos: Vector2,
+  size: Vector2,
+  icon: string,
+  zIndex: number,
+  isMinimized: boolean,
+  isMaximized: boolean
+  // Add content
 }
-
-function SelectWindow(name: string)
+/**
+ * Gets window rendering fromm saved data
+ * @param data 
+ * @returns 
+ */
+function WindowFromData(data: WindowData)
 {
-  const node = windowDict.get(name);
+  return <Window
+      title={data.title}
+      position={data.pos}
+      icon={data.icon}
+      size={data.size}
+      zIndex={data.zIndex}
+      isMinimized={data.isMinimized}
+      isMaximized={data.isMaximized}
+    />
   
-  windowDict.delete(name);
-  windowDict.set(name, node);
-
-  forceUpdate();
 }
-
-function MinimizeWindow(name: string)
+/**
+ * Gets a taskbar element from saved data
+ * @param data 
+ * @returns 
+ */
+function TaskbarElementFromData(data: WindowData)
 {
-
+  return(
+    <TaskbarElement
+      title={data.title}
+      icon={data.icon}
+    />
+  )
 }
+/**
+ * Tries to create a new window, or brings one into focus if the window already exists
+ * @param name 
+ * @param pos 
+ * @param size 
+ */
+function CreateOrFocusWindow(name: string, icon: string, pos: Vector2, size: Vector2 /* Content */)
+{
+  if(activeDict.has(name))
+  {
+    FocusWindow(name);
+    return;
+  }
 
+  const window: WindowData = {title: name, icon: icon, pos: pos, size: size, zIndex: ++topZIndex, isMinimized: false, isMaximized: false}
+
+  activeDict.set(name, window);
+
+  ForceUpdate();
+}
+/**
+ * Brings a window into focus in the foreground. Unminimizes if required.
+ * @param name 
+ * @returns 
+ */
+function FocusWindow(name: string)
+{
+  const window = activeDict.get(name);
+  if(window == null)
+      return; 
+
+  window.isMinimized = false;
+
+  window.zIndex = ++topZIndex;
+
+  ForceUpdate();
+}
+/**
+ * Either focuses a window and unminimizes it or minimizes it if itś already in focus
+ * @param name 
+ */
+function FocusOrMinimizeWindow(name: string)
+{
+  const window = activeDict.get(name);
+
+  if(window == null)
+      return;
+
+  if(window.zIndex == topZIndex)
+    ToggleMinimizeWindow(name);
+  else
+    FocusWindow(name);
+}
+/**
+ * Toggles minimized state for a specific window
+ * @param name 
+ * @returns 
+ */
+function ToggleMinimizeWindow(name: string)
+{
+  const window = activeDict.get(name);
+
+  if(window == null)
+      return;
+
+  window.isMinimized = !window.isMinimized;
+
+  ForceUpdate();
+}
+/**
+ * Toggles maximized state for a specific window
+ * @param name 
+ * @returns 
+ */
+function ToggleMaximizeWindow(name: string)
+{
+  const window = activeDict.get(name);
+
+  if(window == null)
+      return;
+
+  window.isMaximized = !window.isMaximized;
+
+  ForceUpdate();
+}
+/**
+ * Closes a window process completely
+ * @param name 
+ */
 function CloseWindow(name: string)
 {
-  windowDict.delete(name);
-  forceUpdate();
+  activeDict.delete(name);
+
+  ForceUpdate();
 }
+/**
+ * Subscription to force a render update in the app
+ */
+export let ForceUpdate: () => void = () =>
+{
+  console.warn("Update forced before initialization!");
+};
+
 
 let initialized = false;
 function Init()
@@ -61,10 +172,10 @@ function Init()
 
   initialized = true;
 
-  windowDict.clear();
+  activeDict.clear();
   for(let i = 0; i < 10; i++)
   {
-      CreateWindow(`Test ${i}`, {x: i*2.5, y:i*2.5}, {x:32, y:18});
+      CreateOrFocusWindow(`Test ${i}`, './assets/defaultWallpaper.png', {x: i*2.5, y:i*2.5}, {x:32, y:18});
   }
 }
 
@@ -75,7 +186,7 @@ const App = () =>
   const [size, setSize] = useState<Vector2>();
   const [, setTick] = useState(0);
 
-  forceUpdate = () => setTick(tick => tick + 1);
+  ForceUpdate = () => setTick(tick => tick + 1);
 
   const resizeHandler = () =>
   {
@@ -105,17 +216,22 @@ const App = () =>
     <div className="container">
       <VirtualDesk reactiveOrientation={reactiveOrientation}>
         <Wallpaper />
-            {Array.from(windowDict.entries()).map(([id, windowNode]) => (
+            {Array.from(activeDict.entries()).map(([id, windowData]) => (
             <React.Fragment key={id}>
-                {windowNode}
+                {WindowFromData(windowData)}
             </React.Fragment>
             ))}
         <Taskbar>
+            {Array.from(activeDict.entries()).map(([id, windowData]) => (
+            <React.Fragment key={id}>
+                {TaskbarElementFromData(windowData)}
+            </React.Fragment>
+            ))}
         </Taskbar>
       </VirtualDesk>
     </div>
   )
 }
 
-export { CloseWindow, SelectWindow, CreateWindow };
+export { CloseWindow, FocusWindow, FocusOrMinimizeWindow, CreateOrFocusWindow, ToggleMinimizeWindow, ToggleMaximizeWindow };
 export default App;
