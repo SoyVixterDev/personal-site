@@ -10,8 +10,7 @@ interface VirtualDeskProps
 
 const VirtualDesk = ( {children, reactiveOrientation}:VirtualDeskProps) =>
 {
-    return(
-        
+    return(  
         <div className={ "virtual-desk " + reactiveOrientation}>
             {children} 
         </div>

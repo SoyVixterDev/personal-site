@@ -1,0 +1,80 @@
+.terminal
+{
+    box-sizing: border-box;
+
+    width: 100%;
+    height: 100%;
+
+    padding: .5vw;
+
+    background-color: black;
+    color: greenyellow;
+    font-family: monospace;
+    font-size: 75%;
+
+    overflow-y: auto;
+
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 auto;
+}
+.terminal-input-line
+{
+    flex: 1 0 auto;
+    width: 100%;
+
+    display: flex;
+    align-items: flex-start;
+}
+.terminal-out
+{
+    flex: 0 0 auto;
+    width: 100%;
+
+    box-sizing: border-box;
+
+    word-wrap: break-word;
+
+    user-select: text;
+
+    background-color: transparent;
+    color: inherit;
+    font-family: inherit;
+    font-size: inherit;
+    
+    overflow-x: hidden;
+}
+.terminal-prompt
+{
+    background-color: transparent;
+    color: inherit;
+    font-family: inherit;
+    font-size: inherit;
+    
+    white-space: pre; 
+
+    flex-shrink: 0;
+}
+.terminal-in
+{
+    flex: 1 1 auto;
+
+    box-sizing: border-box;
+    word-wrap: break-word;
+    
+    overflow: hidden;
+    overflow-wrap: break-word;
+
+    padding: 0;
+    margin: 0;
+
+    resize: none;
+
+    background-color: transparent;
+    color: inherit;
+    font-family: inherit;
+    font-size: inherit;
+
+    outline: none;
+    border: none;
+}

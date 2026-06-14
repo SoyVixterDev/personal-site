@@ -13,3 +13,31 @@ body
   height: 100vh;
   background-color: black;
 }
+* 
+{
+    scrollbar-width: auto; 
+    scrollbar-color: #36365f #36365f; 
+}
+::-webkit-scrollbar 
+{
+    width: 1vw; 
+    height: 1vw; 
+}
+
+::-webkit-scrollbar-track
+{
+    background-color: #36365f;
+    border-left: 0.1vw solid #707da2;
+    border-top: 0.1vw solid #707da2;
+}
+
+::-webkit-scrollbar-thumb
+{
+    background-color: #707da2;
+    border: 0.1vw solid white;
+}
+
+::-webkit-scrollbar-thumb:hover
+{
+    background-color: #8a96c0;
+}

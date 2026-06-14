@@ -10,6 +10,7 @@ import Window from './desktop-environment/Window.tsx'
 import TaskbarElement from './desktop-environment/TaskbarElement.tsx';
 
 import DefaultWallpaper from './assets/defaultWallpaper.png';
+import Terminal from './terminal-app/Terminal.tsx';
 
 
 const activeDict: Map<string, WindowData> = new Map();
@@ -30,8 +31,9 @@ interface WindowData
   taskbarIconPos: Vector2,
   
   isMinimized: boolean,
-  isMaximized: boolean
-  // Add content
+  isMaximized: boolean,
+  
+  content: any
 }
 /**
  * Gets window rendering fromm saved data
@@ -49,7 +51,7 @@ function WindowFromData(data: WindowData)
       taskbarIconPos={data.taskbarIconPos}
       isMinimized={data.isMinimized}
       isMaximized={data.isMaximized}
-    />
+    >{data.content}</Window>
   
 }
 /**
@@ -72,7 +74,7 @@ function TaskbarElementFromData(data: WindowData)
  * @param pos 
  * @param size 
  */
-function CreateOrFocusWindow(name: string, icon: string, pos: Vector2, size: Vector2 /* Content */)
+function CreateOrFocusWindow(name: string, icon: string, pos: Vector2, size: Vector2, content: any)
 {
   if(activeDict.has(name))
   {
@@ -80,7 +82,7 @@ function CreateOrFocusWindow(name: string, icon: string, pos: Vector2, size: Vec
     return;
   }
 
-  const window: WindowData = {title: name, icon: icon, pos: pos, size: size, taskbarIconPos: {x: 2 + activeDict.size * 4, y: 2}, zIndex: ++topZIndex, isMinimized: false, isMaximized: false}
+  const window: WindowData = {title: name, icon: icon, pos: pos, size: size, taskbarIconPos: {x: 2 + activeDict.size * 4, y: 2}, zIndex: ++topZIndex, isMinimized: false, isMaximized: false, content: content}
 
   activeDict.set(name, window);
 
@@ -178,10 +180,7 @@ function Init()
   initialized = true;
 
   activeDict.clear();
-  for(let i = 0; i < 10; i++)
-  {
-      CreateOrFocusWindow(`Test ${i}`, DefaultWallpaper, {x: i*2.5, y:i*2.5}, {x:32, y:18});
-  }
+  CreateOrFocusWindow("Terminal", DefaultWallpaper, {x: 25, y: 20}, {x: 40, y: 25}, <Terminal/>);
 }
 
 const App = () =>

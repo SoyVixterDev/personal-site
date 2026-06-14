@@ -5,12 +5,6 @@
     transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
     transform-origin: center;
 
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    -o-user-select: none;
     user-select: none;
 }
 .window.dragging
@@ -20,53 +14,62 @@
 .window-content
 {
     background-color: black;
-    width: auto;
-    height: calc(100% - 1.35vw);
+    color: white;
+
+    box-sizing: border-box;
+    
+    width: calc(100% - 0.5vw);
+    height: calc(100% - 1.45vw);
+
+    overflow: hidden;
 
     margin-bottom: .25vw;
     margin-left: .25vw;
     margin-right: .25vw;
-        
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    -o-user-select: none;
+
     user-select: none;
 }
 .window-decorator
 {
     background-color: #707da2;
     width: auto;
-    height: 1.1vw;
+    height: 1.2vw;
     
     display: flex;
     flex:auto;
     flex-direction: row;
     align-items: center;
 
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    -o-user-select: none;
     user-select: none;
 }
 .window-decorator-button
 {
+    cursor: pointer;
+    transition: filter 0.1s ease, transform 0.05s ease;
+
     background-color: #707da2;
 
     aspect-ratio: calc(1);
-
     height: 100%;
+
+    border: 0.2vw outset;
+    padding: 0vw;
+    margin: 0vw;
+    font-size: 100%;
 
     display: flex;
     justify-content: center;
     align-items: center;
 }
-
+.window-decorator-button:hover
+{
+    filter: brightness(1.1);
+}
+.window-decorator-button:active
+{
+    filter: brightness(0.8);
+    transform: translate(0, 0.1vw);
+}
 .window-decorator_buttons
 {
     aspect-ratio: calc(1);
@@ -83,14 +86,7 @@
     align-self: center;
     align-items: center;
 
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    -o-user-select: none;
     user-select: none;
-    /* pointer-events: none; */
 }
 
 .window-decorator_icon
@@ -100,12 +96,6 @@
     height: 70%;
     padding: 0.5%;
 
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    -o-user-select: none;
     user-select: none;
     pointer-events: none;
 }
@@ -117,14 +107,8 @@
 
     font-family: Impact, Haettenschweiler, 'Arial Bold', sans-serif;
     font-weight: bold;
-    font-size: 65%;
+    font-size: 75%;
 
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    -o-user-select: none;
     user-select: none;
     pointer-events: none;  
 }
