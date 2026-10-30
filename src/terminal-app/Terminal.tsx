@@ -3,7 +3,7 @@ import '../index.css'
 import { ReactNode, useEffect, useRef, useState, KeyboardEvent } from 'react';
 import { CloseWindow } from '../App';
 
-import { LaunchApp, Print, PrintHelp, TryReboot } from './TerminalCommands.tsx'
+import { LaunchApp, OpenLink, Print, PrintHelp, TryReboot } from './TerminalCommands.tsx'
 
 const history: ReactNode[] = [];
 
@@ -41,17 +41,29 @@ const commands: Map<number, (params: string[], isSudo: boolean) => void> = new M
     [ 13373825, () => { PrintLine("Sadly, this is only a website OS, no file system!") }],
     [ 13374001, () => { PrintLine("Sadly, this is only a website OS, no file system!") }],
     [ 13373813, () => { PrintLine("Sadly, this is only a website OS, no file system!") }],
+    
     [ -429908537, (params: string[]) => { PrintHelp(params) }],
-    [ 1281104085, () => { Clear() }],
     [ 1282220715, (params: string[]) => { Print(params) }],
-    [ -429917832, () => { CloseWindow('Terminal') }],
     [ 315875161, (params: string[]) => { LaunchApp(params) }],
+    [ 1281104085, () => { Clear() }],
+    [ -429917832, () => { CloseWindow('Terminal') }],
+    [ -429909582, (params: string[]) => { PrintLine(hash(params.join(' ')).toString()) }],
+    [ 13373927, () => PrintLine('127.0.0.1')],
+    [ 324635545, (params: string[], isSudo: boolean) => { TryReboot(isSudo) }],
+
     [ 227355553, () => { PrintLine("There are no eggs") }],
     [ 308767828, () => { CloseWindow('Terminal') }],
-    [ -429909582, (params: string[]) => { PrintLine(hash(params.join(' ')).toString()) }],
-    [ 324635545, (params: string[], isSudo: boolean) => { TryReboot(isSudo) }],
-    [ 1167289951, () => { PrintLine("Opened OpenUGC site on a new tab!"); window.open('https://paulowgdev.github.io/OpenUGC/', '_blank')?.focus(); }],
-    [ 13373927, () => PrintLine('127.0.0.1')]
+
+    [ 1167289951, () => { OpenLink('https://paulowgdev.github.io/OpenUGC/'); }],
+    [ 1281663202, () => { OpenLink('https://github.com/SoyVixterDev/JGame'); }],
+
+    [ -3224889934, () => { OpenLink('https://store.steampowered.com/app/2610540/Divemensions/'); }],
+    [ 622312424, () => { OpenLink('https://byteberry-team.itch.io/unnatural'); }],
+    [ 2895719887, () => { OpenLink('https://soyvixterdev.itch.io/paramnesia'); }],
+    [ 886762735, () => { OpenLink('https://nebulevs.itch.io/fruit-em-up'); }],
+    [ 9184247, () => { OpenLink('https://soyvixterdev.itch.io/soup-rush'); }],
+    [ 1321956935, () => { OpenLink('https://soyvixterdev.itch.io/unfinished-business-vc'); }],
+    
 ]);
 
 /**
